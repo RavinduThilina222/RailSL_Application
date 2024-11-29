@@ -64,12 +64,15 @@ const UserHome = () => {
 
             <input
               type="date"
+              value={new Date().toISOString().split('T')[0]}
               className="w-full border border-gray-400 rounded-md p-3 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
               type="number"
               placeholder="Number of Passengers"
+              max={5}
+              min={1}
               className="w-full border border-gray-400 rounded-md p-3 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 

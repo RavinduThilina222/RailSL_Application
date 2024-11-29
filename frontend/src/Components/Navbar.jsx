@@ -12,7 +12,7 @@ const Navbar = () => {
     <div className="bg-blue-300 flex items-center justify-between text-sm py-4 mb-5 border-b border-gray-400 shadow-md">
       <img src={logo} alt="Train Booking Logo" className="w-24 ml-6 cursor-pointer " />
       <ul className="hidden md:flex items-center gap-8 font-medium">
-        <NavLink to="/" className="relative group">
+        <NavLink to="/home" className="relative group">
           <li className="py-1">HOME</li>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden group-hover:block" />
         </NavLink>
@@ -46,7 +46,7 @@ const Navbar = () => {
           </div>
         ) : (
           <button
-            className="bg-primary text-blue px-8 py-3 rounded-full font-light hidden md:block hover:bg-primary-dark"
+            className="bg-blue-600 text-blue-50 px-8 py-3 rounded-full font-light hidden md:block hover:bg-blue-400"
             onClick={() => navigate('/login')}
           >
             Sign In

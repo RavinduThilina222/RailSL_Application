@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import logo from "/src/assets/railsl-logo.png";
+import RECAPTCHA from "react-google-recaptcha";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -13,6 +14,7 @@ const LoginPage = () => {
 
     return (
         <>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             <div className="flex justify-center items-center h-screen bg-cover bg-center bg-fixed relative" style={{ backgroundImage: "url('https://seatreservation.railway.gov.lk/mtktwebslr/gallery/gallery-3.jpg')" }}>
                 <div className="bg-white flex flex-col items-center justify-center border border-blue-500 rounded-2xl p-4 w-11/12 max-w-md shadow-lg hover:shadow-xl transition-shadow duration-200">
                     <img src={logo} alt="logo" width="100" height="100" />
@@ -38,6 +40,9 @@ const LoginPage = () => {
                                 required
                                 className="p-2 text-sm border border-blue-500 rounded-full w-full"
                             />
+
+                            {/* Add the RECAPTCHA component here */}
+                            <div class="g-recaptcha" data-sitekey="6LckaI0qAAAAAEEkiuyTxlk58OstLl-zT7qkuWVJ"></div>
                             <button type="button" className="text-blue-500 text-xs mt-1 ml-36 hover:underline">Forgot password?</button>
                         </div>
                         <button type="submit" className="p-2 text-white bg-blue-500 rounded-full hover:bg-blue-700">Login</button>
