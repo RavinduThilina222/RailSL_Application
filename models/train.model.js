@@ -23,10 +23,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER
       },
       depature_time: {
-        type: Sequelize.TIME
+        type: Sequelize.STRING(100)
       },
       arrival_time: {
-        type: Sequelize.TIME
+        type: Sequelize.STRING(100)
       }
     });
   

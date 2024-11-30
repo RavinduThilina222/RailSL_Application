@@ -1,16 +1,16 @@
-module.exports = app => {
-  const user = require("../controllers/user.controller.js");
+const express = require('express');
+const router = express.Router();
+const userController = require("../controllers/user.controller");
 
-  var router = require("express").Router();
+// Create a new user
+router.post("/", userController.create);
 
-  router.post("/", user.create);
-  router.get("/", user.findAll);
+// Get all users
+router.get("/", userController.findAll);
 
-  // Add login route
-  router.post("/login", user.login);
+// User login route
+router.post("/login", userController.login);
 
-  // Add route to handle fetching user details
-  router.post("/details", user.findDetails);
 
-  app.use('/api/user', router);
-};
+
+module.exports = router;

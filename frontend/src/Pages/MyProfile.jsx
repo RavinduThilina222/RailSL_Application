@@ -13,6 +13,8 @@ const MyProfile = () => {
     NIC: ''
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -26,16 +28,30 @@ const MyProfile = () => {
     fetchUser();
   }, []);
 
+  const validateInput = () => {
+    const newErrors = {};
+    if (!user.Full_Name.trim()) newErrors.Full_Name = 'Full Name is required.';
+    if (!/\S+@\S+\.\S+/.test(user.email)) newErrors.email = 'Invalid email format.';
+    if (!/^\d{10}$/.test(user.phone_number)) newErrors.phone_number = 'Phone Number must be 10 digits.';
+    if (!user.username.trim()) newErrors.username = 'Username is required.';
+    if (user.password.length < 8) newErrors.password = 'Password must be at least 8 characters long.';
+    if (!user.NIC.trim()) newErrors.NIC = 'NIC is required.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value
     }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: '' })); // Clear error for this field
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateInput()) return;
     try {
       await axios.put('/api/user/me', user);
       alert('Profile updated successfully');
@@ -60,6 +76,7 @@ const MyProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded mt-1"
             />
+            {errors.Full_Name && <p className="text-red-500 text-sm">{errors.Full_Name}</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
@@ -70,6 +87,7 @@ const MyProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded mt-1"
             />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Phone Number</label>
@@ -80,6 +98,7 @@ const MyProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded mt-1"
             />
+            {errors.phone_number && <p className="text-red-500 text-sm">{errors.phone_number}</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Username</label>
@@ -90,6 +109,7 @@ const MyProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded mt-1"
             />
+            {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Password</label>
@@ -100,6 +120,7 @@ const MyProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded mt-1"
             />
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">NIC</label>
@@ -110,6 +131,7 @@ const MyProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded mt-1"
             />
+            {errors.NIC && <p className="text-red-500 text-sm">{errors.NIC}</p>}
           </div>
           <button
             type="submit"

@@ -1,13 +1,11 @@
 const db = require("../models");
 const Train = db.train;
 
-exports.create = (req, res) => {
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }
+
+// Add more methods as needed
+
+exports.addTrain = (req, res) => {
+  console.log('Received train details:', req.body); // Log received data
 
   const train = {
     train_no: req.body.train_no,
@@ -23,13 +21,13 @@ exports.create = (req, res) => {
 
   Train.create(train)
     .then(data => {
-      res.send(data);
+      res.status(201).json(data); // Use 201 status for created resource
     })
     .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Train."
+      console.error('Error creating train:', err); // Log full error details
+      res.status(500).json({
+        message: err.message || "Some error occurred while creating the Train.",
+        error: err.toString()
       });
     });
 };
-
-// Add more methods as needed

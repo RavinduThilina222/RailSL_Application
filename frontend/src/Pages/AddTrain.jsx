@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '/src/Components/Navbar';
+import axios from 'axios';
 
 const AddTrain = () => {
   const [trainDetails, setTrainDetails] = useState({
@@ -46,21 +47,29 @@ const AddTrain = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:8080/api/trains', { // Updated URL
-        method: 'POST',
+      const response = await axios.post('http://localhost:8080/api/train/trains', trainDetails, {
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(trainDetails)
+        }
       });
-      if (response.ok) {
+      
+      // Check response status
+      if (response.status === 201) {
         alert('Train added successfully');
+        // Additional success handling (e.g., reset form)
       } else {
         alert('Failed to add train');
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error adding train');
+      console.error('Full error:', error);
+      console.error('Error response:', error.response?.data);
+      
+      // More informative error message
+      if (error.response) {
+        alert(`Error: ${error.response.data.message || 'Failed to add train'}`);
+      } else {
+        alert('Network error or server is not responding');
+      }
     }
   };
 
