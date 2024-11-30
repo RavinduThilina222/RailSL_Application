@@ -1,8 +1,8 @@
 module.exports = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "password",
-    DB: "railsl",
+    PASSWORD: "",
+    DB: "railsl_db",
     dialect: "mysql",
     pool: {
       max: 5,

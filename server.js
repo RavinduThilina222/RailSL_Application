@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: ["http://localhost:3000", "http://localhost:5173"]
 };
 
 app.use(cors(corsOptions));
@@ -19,6 +19,20 @@ db.sequelize.sync();
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to train booking application." });
+});
+
+// User login route
+app.post('/api/user/login', (req, res) => {
+    const { username, password } = req.body;
+    // Handle user login logic here
+    res.json({ message: 'User login successful' });
+});
+
+// Admin login route
+app.post('/api/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    // Handle admin login logic here
+    res.json({ message: 'Admin login successful' });
 });
 
 require("./routes/admin.routes.js")(app);

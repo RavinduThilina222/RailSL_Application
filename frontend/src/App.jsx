@@ -1,18 +1,15 @@
-import React from 'react'
-import LoginPage from './Pages/LoginPage'
-import './index.css'
-import UserHome from './Pages/UserHome'
-import SignUpUser from './Pages/SignUpUser'
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ViewScheduleUser from './Pages/ViewScheduleUser'
-import ConfirmBooking from './Pages/ConfirmBooking'
-import MyProfile from './Pages/MyProfile'
-import MyBookings from './Pages/MyBookings'
-import AddTrain from './Pages/AddTrain'
+import MyProfile from './Pages/MyProfile';
+import MyBookings from './Pages/MyBookings';
+import AddTrain from './Pages/AddTrain';
+import LoginPage from './Pages/LoginPage';
+import SignUpUser from './Pages/SignUpUser';
+import UserHome from './Pages/UserHome';
+import ViewScheduleUser from './Pages/ViewScheduleUser';
+import ConfirmBooking from './Pages/ConfirmBooking';
 
 function App() {
-
-
   return (
     <>
       <Router>
@@ -24,11 +21,11 @@ function App() {
           <Route path="/confirmBooking" element={<ConfirmBooking />} />
           <Route path='/myprofile' element={<MyProfile />} />
           <Route path='/mybookings' element={<MyBookings />} />
-          <Route path='/addtrain' element={AddTrain} />
+          <Route path='/addtrain' element={<AddTrain />} />
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

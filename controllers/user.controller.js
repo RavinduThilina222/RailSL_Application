@@ -30,4 +30,32 @@ exports.create = (req, res) => {
     });
 };
 
-// Add more methods as needed
+// Add login method
+exports.login = (req, res) => {
+  const { username, password } = req.body;
+
+  User.findOne({ where: { username, password } })
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: "User not found." });
+      }
+      res.send({ message: "User login successful", user });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while logging in the User."
+      });
+    });
+};
+
+exports.findAll = (req, res) => {
+  User.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving users."
+      });
+    });
+};

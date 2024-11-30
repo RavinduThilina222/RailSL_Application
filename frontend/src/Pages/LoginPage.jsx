@@ -1,15 +1,39 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "/src/assets/railsl-logo.png";
-import RECAPTCHA from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
+import api from "../services/api";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false); // State to toggle between user and admin login
+    const [recaptchaToken, setRecaptchaToken] = useState(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    console.log("RECAPTCHA SITE KEY:", import.meta.env.VITE_RECAPTCHA_SITE_KEY);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Username:", username);
-        console.log("Password:", password);
+        if (!recaptchaToken) {
+            alert("Please complete the reCAPTCHA");
+            return;
+        }
+        try {
+            const endpoint = isAdmin ? '/admin/login' : '/user/login';
+            const response = await api.post(endpoint, { username, password });
+            console.log(response.data);
+            // Handle successful login (e.g., save token, redirect)
+            navigate('/home');
+        } catch (error) {
+            console.error(error);
+            // Handle login error
+        }
+    };
+
+    const handleRecaptchaChange = (value) => {
+        console.log("Captcha value:", value);
+        setRecaptchaToken(value);
     };
 
     return (
@@ -40,16 +64,27 @@ const LoginPage = () => {
                                 required
                                 className="p-2 text-sm border border-blue-500 rounded-full w-full"
                             />
-
-                            {/* Add the RECAPTCHA component here */}
-                            <div class="g-recaptcha" data-sitekey="6LckaI0qAAAAAEEkiuyTxlk58OstLl-zT7qkuWVJ"></div>
+                            
                             <button type="button" className="text-blue-500 text-xs mt-1 ml-36 hover:underline">Forgot password?</button>
                         </div>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={isAdmin}
+                                onChange={(e) => setIsAdmin(e.target.checked)}
+                                className="mr-2"
+                            />
+                            <label className="text-xs text-blue-900">Login as Admin</label>
+                        </div>
+                        <ReCAPTCHA
+                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                            onChange={handleRecaptchaChange}
+                        />
                         <button type="submit" className="p-2 text-white bg-blue-500 rounded-full hover:bg-blue-700">Login</button>
                         <div className="text-center text-sm">
                             <span>Don't have an account?</span>
                         </div>
-                        <button type="submit" className="p-2 text-white bg-blue-700 rounded-full hover:bg-blue-500">Signup</button>
+                        <button type="button" className="p-2 text-white bg-blue-700 rounded-full hover:bg-blue-500">Signup</button>
                     </form>
                 </div>
                 <p className="absolute bottom-0 w-full text-center text-xs text-white p-2">&copy; 2024 RT Solutions. All rights reserved.</p>

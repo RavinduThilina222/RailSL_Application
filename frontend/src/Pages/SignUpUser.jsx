@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api'; // Make sure to create this file as mentioned earlier
 
 function SignUpUser() {
     const [formData, setFormData] = useState({
@@ -55,111 +56,126 @@ function SignUpUser() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log("Form data submitted:", formData);
+            try {
+                const response = await api.post('/user', {
+                    User_ID: formData.username, // Assuming User_ID is the same as username
+                    Full_Name: formData.fullName,
+                    email: formData.email,
+                    phone_number: formData.phoneNumber,
+                    username: formData.username,
+                    password: formData.password,
+                    NIC: formData.nic
+                });
+                console.log("Form data submitted:", response.data);
+                // Handle successful signup (e.g., redirect to login page)
+            } catch (error) {
+                console.error(error);
+                // Handle signup error
+            }
         }
     };
 
     return (
-      <div style={{ backgroundImage: "url('https://seatreservation.railway.gov.lk/mtktwebslr/gallery/gallery-3.jpg')" }}>
-        <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md" >
-            <h1 className="text-2xl font-bold mb-6 text-center">Signup</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input
-                        type="text"
-                        id="fullName"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your full name"
-                    />
-                    {errors.fullName && <div className="text-red-500 text-sm mt-1">{errors.fullName}</div>}
-                </div>
+        <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('https://seatreservation.railway.gov.lk/mtktwebslr/gallery/gallery-3.jpg')" }}>
+            <div className="max-w-xl w-full bg-white p-8 rounded-lg shadow-lg">
+                <h1 className="text-3xl font-bold mb-6 text-center text-blue-900">Signup</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter your full name"
+                        />
+                        {errors.fullName && <div className="text-red-500 text-sm mt-1">{errors.fullName}</div>}
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your email"
-                    />
-                    {errors.email && <div className="text-red-500 text-sm mt-1">{errors.email}</div>}
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter your email"
+                        />
+                        {errors.email && <div className="text-red-500 text-sm mt-1">{errors.email}</div>}
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input
-                        type="text"
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your phone number"
-                    />
-                    {errors.phoneNumber && <div className="text-red-500 text-sm mt-1">{errors.phoneNumber}</div>}
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input
+                            type="text"
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter your phone number"
+                        />
+                        {errors.phoneNumber && <div className="text-red-500 text-sm mt-1">{errors.phoneNumber}</div>}
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your username"
-                    />
-                    {errors.username && <div className="text-red-500 text-sm mt-1">{errors.username}</div>}
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter your username"
+                        />
+                        {errors.username && <div className="text-red-500 text-sm mt-1">{errors.username}</div>}
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Create a strong password"
-                    />
-                    {errors.password && <div className="text-red-500 text-sm mt-1">{errors.password}</div>}
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Create a strong password"
+                        />
+                        {errors.password && <div className="text-red-500 text-sm mt-1">{errors.password}</div>}
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="nic" className="block text-sm font-medium text-gray-700">NIC</label>
-                    <input
-                        type="text"
-                        id="nic"
-                        name="nic"
-                        value={formData.nic}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your NIC"
-                    />
-                    {errors.nic && <div className="text-red-500 text-sm mt-1">{errors.nic}</div>}
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="nic" className="block text-sm font-medium text-gray-700">NIC</label>
+                        <input
+                            type="text"
+                            id="nic"
+                            name="nic"
+                            value={formData.nic}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter your NIC"
+                        />
+                        {errors.nic && <div className="text-red-500 text-sm mt-1">{errors.nic}</div>}
+                    </div>
 
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                    Signup
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                        Signup
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
     );
 }
 
