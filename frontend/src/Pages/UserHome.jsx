@@ -11,7 +11,7 @@ const UserHome = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/view-schedule', {
+    navigate('/schedule', {
       state: { departure, arrival, date, passengers },
     });
   };

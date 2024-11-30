@@ -24,8 +24,29 @@ const AddTrain = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const daysRegex = /^(Weekdays|Weekend|Daily)$/;
+    const trainNoRegex = /^[0-9]{1,4}$/;
+    const trainNameRegex = /^[a-zA-Z\s]{1,50}$/;
+    const trainLineRegex = /^[a-zA-Z\s]{1,50}$/;
+
+    if (!trainNoRegex.test(trainDetails.train_no)) {
+      alert('Train number must be a number with up to 4 digits');
+      return;
+    }
+    if (!trainNameRegex.test(trainDetails.train_name)) {
+      alert('Train name must be alphabetic and up to 50 characters');
+      return;
+    }
+    if (!trainLineRegex.test(trainDetails.Train_Line)) {
+      alert('Train line must be alphabetic and up to 50 characters');
+      return;
+    }
+    if (!daysRegex.test(trainDetails.available_days)) {
+      alert('Available days must be Weekdays, Weekend, or Daily');
+      return;
+    }
     try {
-      const response = await fetch('/api/trains', {
+      const response = await fetch('http://localhost:8080/api/trains', { // Updated URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -51,9 +72,42 @@ const AddTrain = () => {
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="train_no" placeholder="Train No" value={trainDetails.train_no} onChange={handleChange} required />
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="train_name" placeholder="Train Name" value={trainDetails.train_name} onChange={handleChange} required />
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="Train_Line" placeholder="Train Line" value={trainDetails.Train_Line} onChange={handleChange} required />
-        <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="departure_station" placeholder="Departure Station" value={trainDetails.departure_station} onChange={handleChange} required />
-        <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="arrival_station" placeholder="Arrival Station" value={trainDetails.arrival_station} onChange={handleChange} required />
-        <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="available_days" placeholder="Available Days" value={trainDetails.available_days} onChange={handleChange} required />
+        <select className="mb-4 p-2 border border-gray-300 rounded w-full" name="departure_station" value={trainDetails.departure_station} onChange={handleChange} required>
+          <option value="Choose Depature" selected>From</option>
+          <option value="Colombo Fort">Colombo Fort</option>
+          <option value="Kandy">Kandy</option>
+          <option value="Nanu Oya">Nanu Oya</option>
+          <option value="Badulla">Badulla</option>
+          <option value="Matara">Matara</option>
+          <option value="Beliaththa">Beliaththa</option>
+          <option value="Anuradhapura">Anuradhapura</option>
+          <option value="Jaffna">Jaffna</option>
+          <option value="Thalaimannar">Thalaimannar</option>
+          <option value="Trincomalle">Trincomalle</option>
+          <option value="Batticoloa">Batticoloa</option>
+          <option value="Awissawella">Awissawella</option>
+        </select>
+        <select className="mb-4 p-2 border border-gray-300 rounded w-full" name="arrival_station" value={trainDetails.arrival_station} onChange={handleChange} required>
+          <option value="Choose Depature" selected>To</option>
+          <option value="Colombo Fort">Colombo Fort</option>
+          <option value="Kandy">Kandy</option>
+          <option value="Nanu Oya">Nanu Oya</option>
+          <option value="Badulla">Badulla</option>
+          <option value="Matara">Matara</option>
+          <option value="Beliaththa">Beliaththa</option>
+          <option value="Anuradhapura">Anuradhapura</option>
+          <option value="Jaffna">Jaffna</option>
+          <option value="Thalaimannar">Thalaimannar</option>
+          <option value="Trincomalle">Trincomalle</option>
+          <option value="Batticoloa">Batticoloa</option>
+          <option value="Awissawella">Awissawella</option>
+        </select>
+        <select className="mb-4 p-2 border border-gray-300 rounded w-full" name="available_days" value={trainDetails.available_days} onChange={handleChange} required>
+          <option value="" disabled>Select Available Days</option>
+          <option value="Weekdays">Weekdays</option>
+          <option value="Weekend">Weekend</option>
+          <option value="Daily">Daily</option>
+        </select>
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="number" name="capacity" placeholder="Capacity" value={trainDetails.capacity} onChange={handleChange} required />
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="time" name="depature_time" placeholder="Departure Time" value={trainDetails.depature_time} onChange={handleChange} required />
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="time" name="arrival_time" placeholder="Arrival Time" value={trainDetails.arrival_time} onChange={handleChange} required />
