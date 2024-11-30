@@ -71,7 +71,16 @@ const AddTrain = () => {
       <form className="bg-white p-6 rounded shadow-md max-w-md mx-auto" onSubmit={handleSubmit}>
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="train_no" placeholder="Train No" value={trainDetails.train_no} onChange={handleChange} required />
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="train_name" placeholder="Train Name" value={trainDetails.train_name} onChange={handleChange} required />
-        <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="Train_Line" placeholder="Train Line" value={trainDetails.Train_Line} onChange={handleChange} required />
+        <select className="mb-4 p-2 border border-gray-300 rounded w-full" name="Train_Line" value={trainDetails.Train_Line} onChange={handleChange} required>
+          <option value="" disabled>Select Train Line</option>
+          <option value="Main">Main</option>
+          <option value="Costal">Costal</option>
+          <option value="North">North</option>
+          <option value="Mannar">Mannar</option>
+          <option value="KV">KV</option>
+          <option value="Batticoloa">Battilicoa</option>
+          <option value="Trincomalli">Trincomalee</option>
+        </select>
         <select className="mb-4 p-2 border border-gray-300 rounded w-full" name="departure_station" value={trainDetails.departure_station} onChange={handleChange} required>
           <option value="Choose Depature" selected>From</option>
           <option value="Colombo Fort">Colombo Fort</option>
