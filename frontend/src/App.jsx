@@ -8,6 +8,12 @@ import SignUpUser from './Pages/SignUpUser';
 import UserHome from './Pages/UserHome';
 import ViewScheduleUser from './Pages/ViewScheduleUser';
 import ConfirmBooking from './Pages/ConfirmBooking';
+import TrainSettings from './Pages/TrainSettings';
+import TrainScheduleSettings from './Pages/TrainScheduleSettings';
+import Booking from './Pages/Booking';
+import AddSchedule from './Pages/AddSchedule';
+import AddAdmin from './Pages/AddAdmin';
+import AdminHome from './Pages/AdminHome';
 
 function App() {
   return (
@@ -22,6 +28,12 @@ function App() {
           <Route path='/myprofile' element={<MyProfile />} />
           <Route path='/mybookings' element={<MyBookings />} />
           <Route path='/addtrain' element={<AddTrain />} />
+          <Route path='/trainsadmin' element={<TrainSettings />} />
+          <Route path='/trainScheduleAdmin' element={<TrainScheduleSettings/>}/>
+          <Route path='/bookings' element={<Booking/>}/>
+          <Route path='/addSchedule' element={<AddSchedule/>}/>
+          <Route path='/addAdmin' element={<AddAdmin/>}/>
+          <Route path='/adminHome' element={<AdminHome/>}/>
         </Routes>
       </Router>
     </>

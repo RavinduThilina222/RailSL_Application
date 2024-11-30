@@ -35,6 +35,13 @@ app.post('/api/admin/login', (req, res) => {
     res.json({ message: 'Admin login successful' });
 });
 
+//View all trains
+app.get('/api/train', (req, res) => {
+  // Handle get all trains logic here
+  
+  res.json({ message: 'Get all trains' });
+});
+
 require("./routes/admin.routes.js")(app);
 require("./routes/booking.routes.js")(app);
 require("./routes/schedule.routes.js")(app);
