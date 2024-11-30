@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '/src/Components/Navbar';
 
 const UserHome = () => {
+  const navigate = useNavigate();
+  const [departure, setDeparture] = useState('');
+  const [arrival, setArrival] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [passengers, setPassengers] = useState(1);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/view-schedule', {
+      state: { departure, arrival, date, passengers },
+    });
+  };
+
   return (
     <>
       <Navbar />
@@ -18,14 +32,16 @@ const UserHome = () => {
         </h1>
 
         <div className="mt-8 bg-white bg-opacity-90 shadow-lg rounded-lg p-8 w-full max-w-md">
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <h2 className="text-2xl font-semibold text-center text-blue-800">
               Book a Train
             </h2>
             <select
+              value={departure}
+              onChange={(e) => setDeparture(e.target.value)}
               className="w-full border border-gray-400 rounded-md p-3 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Choose Depature" disabled selected>
+              <option value="Choose Depature"  selected>
                 From
               </option>
               <option value="Colombo Fort">Colombo Fort</option>
@@ -43,9 +59,11 @@ const UserHome = () => {
             </select>
 
             <select
+              value={arrival}
+              onChange={(e) => setArrival(e.target.value)}
               className="w-full border border-gray-400 rounded-md p-3 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Choose Arrival" disabled selected>
+              <option value="Choose Arrival"  selected>
                 To
               </option>
               <option value="Colombo Fort">Colombo Fort</option>
@@ -64,12 +82,15 @@ const UserHome = () => {
 
             <input
               type="date"
-              value={new Date().toISOString().split('T')[0]}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               className="w-full border border-gray-400 rounded-md p-3 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
               type="number"
+              value={passengers}
+              onChange={(e) => setPassengers(e.target.value)}
               placeholder="Number of Passengers"
               max={5}
               min={1}

@@ -15,6 +15,12 @@ module.exports = (sequelize, Sequelize) => {
       },
       status: {
         type: Sequelize.STRING(15)
+      },
+      seats: {
+        type: Sequelize.INTEGER
+      },
+      total_fee: {
+        type: Sequelize.FLOAT
       }
     });
   

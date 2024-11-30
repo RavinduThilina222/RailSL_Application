@@ -1,11 +1,62 @@
 import React from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../Components/Navbar';
 
 const ConfirmBooking = () => {
-  const numberOfSeats = 3;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { train, passengers, user } = location.state || {};
+
+  if (!train || !passengers || !user) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex flex-col justify-center items-center h-screen bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage:
+              "url('https://seatreservation.railway.gov.lk/mtktwebslr/gallery/gallery-3.jpg')",
+          }}>
+          <div className="mt-8 bg-white bg-opacity-90 shadow-lg rounded-lg p-8 w-full max-w-md">
+            <h2 className="text-2xl font-semibold text-center text-blue-800">
+              Error: Missing booking details.
+            </h2>
+            <Link to="/home" className="text-blue-600 hover:underline">
+              Go back to booking page
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const feePerSeat = 20;
   const bookingFee = 5;
-  const totalFee = numberOfSeats * feePerSeat + bookingFee;
+  const totalFee = passengers * feePerSeat + bookingFee;
+
+  const handleConfirmBooking = async () => {
+    const bookingData = {
+      user_id: user.User_ID,
+      schedule_id: train.schedule_id,
+      booking_date: new Date(),
+      status: 'Confirmed',
+      seats: passengers,
+      total_fee: totalFee
+    };
+
+    const response = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    });
+
+    if (response.ok) {
+      navigate('/booking-success');
+    } else {
+      alert('Booking failed. Please try again.');
+    }
+  };
 
   return (
     <div>
@@ -25,13 +76,13 @@ const ConfirmBooking = () => {
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Train Number</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  12345
+                  {train.number}
                 </p>
               </div>
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Train Name</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  Express Train
+                  {train.name}
                 </p>
               </div>
             </div>
@@ -39,13 +90,13 @@ const ConfirmBooking = () => {
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Departure</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  Colombo
+                  {train.departure}
                 </p>
               </div>
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Arrival</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  Kandy
+                  {train.arrival}
                 </p>
               </div>
             </div>
@@ -53,13 +104,13 @@ const ConfirmBooking = () => {
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Departure Time</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  08:00 AM
+                  {train.departureTime}
                 </p>
               </div>
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Arrival Time</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  10:00 AM
+                  {train.arrivalTime}
                 </p>
               </div>
             </div>
@@ -67,7 +118,7 @@ const ConfirmBooking = () => {
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Number of Seats</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  {numberOfSeats}
+                  {passengers}
                 </p>
               </div>
               <div className="w-1/2">
@@ -93,6 +144,7 @@ const ConfirmBooking = () => {
             </div>
             <button
               className="bg-blue-600 text-blue-50 px-8 py-3 rounded-full font-light hover:bg-blue-400"
+              onClick={handleConfirmBooking}
             >
               Confirm
             </button>
