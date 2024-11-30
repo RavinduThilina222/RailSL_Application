@@ -1,11 +1,7 @@
-module.exports = app => {
-    const booking = require("../controllers/booking.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", booking.create);
-  
-    // Add more routes as needed
-  
-    app.use('/api/booking', router);
-  };
+const express = require('express');
+const router = express.Router();
+const bookingController = require('../controllers/booking.controller');
+
+router.post('/bookings', bookingController.createBooking);
+
+module.exports = router;

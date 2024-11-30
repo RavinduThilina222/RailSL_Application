@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../Components/Navbar';
 
@@ -6,6 +6,7 @@ const ConfirmBooking = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { train, passengers, user } = location.state || {};
+  const [numPassengers, setNumPassengers] = useState(passengers || 1);
 
   if (!train || !passengers || !user) {
     return (
@@ -31,7 +32,7 @@ const ConfirmBooking = () => {
 
   const feePerSeat = 20;
   const bookingFee = 5;
-  const totalFee = passengers * feePerSeat + bookingFee;
+  const totalFee = numPassengers * feePerSeat + bookingFee;
 
   const handleConfirmBooking = async () => {
     const bookingData = {
@@ -39,7 +40,7 @@ const ConfirmBooking = () => {
       schedule_id: train.schedule_id,
       booking_date: new Date(),
       status: 'Confirmed',
-      seats: passengers,
+      seats: numPassengers,
       total_fee: totalFee
     };
 
@@ -117,9 +118,13 @@ const ConfirmBooking = () => {
             <div className="flex gap-4">
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Number of Seats</label>
-                <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
-                  {passengers}
-                </p>
+                <input
+                  type="number"
+                  value={numPassengers}
+                  onChange={(e) => setNumPassengers(e.target.value)}
+                  className="w-full border border-gray-400 rounded-md p-3 bg-gray-100"
+                  min="1"
+                />
               </div>
               <div className="w-1/2">
                 <label className="text-blue-800 font-semibold">Fee per Seat</label>
@@ -139,6 +144,20 @@ const ConfirmBooking = () => {
                 <label className="text-blue-800 font-semibold">Total Fee</label>
                 <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
                   ${totalFee}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-1/2">
+                <label className="text-blue-800 font-semibold">Scheduled Date</label>
+                <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
+                  {train.scheduled_date}
+                </p>
+              </div>
+              <div className="w-1/2">
+                <label className="text-blue-800 font-semibold">Booked Seats</label>
+                <p className="w-full border border-gray-400 rounded-md p-3 bg-gray-100">
+                  {train.no_of_booked_seats}
                 </p>
               </div>
             </div>

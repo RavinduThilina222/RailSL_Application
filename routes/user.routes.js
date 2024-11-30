@@ -9,5 +9,8 @@ module.exports = app => {
   // Add login route
   router.post("/login", user.login);
 
+  // Add route to handle fetching user details
+  router.post("/details", user.findDetails);
+
   app.use('/api/user', router);
 };

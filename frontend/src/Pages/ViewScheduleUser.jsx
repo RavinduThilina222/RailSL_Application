@@ -56,6 +56,8 @@ const ViewScheduleUser = () => {
                 <th className="px-4 py-2">Arrival</th>
                 <th className="px-4 py-2">Departure Time</th>
                 <th className="px-4 py-2">Arrival Time</th>
+                <th className="px-4 py-2">Scheduled Date</th>
+                <th className="px-4 py-2">Booked Seats</th>
                 <th className="px-4 py-2"></th>
               </tr>
               </thead>
@@ -68,6 +70,8 @@ const ViewScheduleUser = () => {
                     <td className="border px-4 py-2">{train.arrival}</td>
                     <td className="border px-4 py-2">{train.departureTime}</td>
                     <td className="border px-4 py-2">{train.arrivalTime}</td>
+                    <td className="border px-4 py-2">{train.scheduled_date}</td>
+                    <td className="border px-4 py-2">{train.no_of_booked_seats}</td>
                     <td className="border px-4 py-2">
                       <button className="bg-blue-500 text-white px-4 py-2 rounded">
                         Select

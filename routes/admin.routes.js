@@ -1,11 +1,11 @@
-module.exports = app => {
-    const admin = require("../controllers/admin.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", admin.create);
-  
-    // Add more routes as needed
-  
-    app.use('/api/admin', router);
-  };
+const express = require("express");
+const router = express.Router();
+const adminController = require("../controllers/admin.controller.js");
+
+// Define your routes here
+router.get("/", adminController.findAll);
+router.post("/", adminController.create);
+router.post("/login", adminController.login);
+// ...other routes...
+
+module.exports = router;

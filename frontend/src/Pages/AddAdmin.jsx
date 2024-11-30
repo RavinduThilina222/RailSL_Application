@@ -21,8 +21,11 @@ const AddAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting admin details:", { ...adminDetails, password: '******' }); // Mask password
+    console.log("Request payload:", adminDetails); // Log the request payload
+  
     try {
-      const response = await fetch('/api/admins', {
+      const response = await fetch('http://localhost:8080/api/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,11 +35,12 @@ const AddAdmin = () => {
       if (response.ok) {
         alert('Admin added successfully');
       } else {
-        alert('Failed to add admin');
+        const errorData = await response.json();
+        alert(`Failed to add admin: ${errorData.message}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error adding admin');
+      alert(`Error adding admin: ${error.message}`);
     }
   };
 

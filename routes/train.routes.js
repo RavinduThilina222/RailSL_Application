@@ -4,6 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
   
     router.post("/", train.create);
+    router.post("/details", train.findDetails);
   
     // Add more routes as needed
   
