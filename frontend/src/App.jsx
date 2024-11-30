@@ -8,6 +8,7 @@ import ViewScheduleUser from './Pages/ViewScheduleUser'
 import ConfirmBooking from './Pages/ConfirmBooking'
 import MyProfile from './Pages/MyProfile'
 import MyBookings from './Pages/MyBookings'
+import AddTrain from './Pages/AddTrain'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/confirmBooking" element={<ConfirmBooking />} />
           <Route path='/myprofile' element={<MyProfile />} />
           <Route path='/mybookings' element={<MyBookings />} />
+          <Route path='/addtrain' element={AddTrain} />
         </Routes>
       </Router>
     </>
