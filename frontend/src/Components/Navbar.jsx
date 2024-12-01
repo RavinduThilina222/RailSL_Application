@@ -24,35 +24,39 @@ const Navbar = () => {
           <li className="py-1">CONTACT</li>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden group-hover:block" />
         </NavLink>
-      </ul>
-      <div className="flex items-center gap-4">
-        {token ? (
-          <div className="flex items-center gap-2 cursor-pointer group relative">
-            <img className="w-12 h-12 rounded-full" src={profile_pic} alt="Profile" />
-            <img className="w-2.5 mr-6" src={dropdown_icon} alt="Dropdown Icon" />
-            <div className="absolute top-0 right-0 pt-12 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
-              <div className="min-w-48 bg-white rounded shadow-lg flex flex-col gap-4 p-4">
-                <p onClick={() => navigate('/myprofile')} className="hover:text-black cursor-pointer">
-                  My Profile
-                </p>
-                <p onClick={() => navigate('/mybookings')} className="hover:text-black cursor-pointer">
-                  My Bookings
-                </p>
-                <p onClick={() => setToken(false)} className="hover:text-black cursor-pointer">
-                  Logout
-                </p>
+        </ul>
+        <div className="flex items-center gap-4">
+          {token ? (
+            <div className="flex items-center gap-2 cursor-pointer group relative">
+              <img className="w-12 h-12 rounded-full" src={profile_pic} alt="Profile" />
+              <img className="w-2.5 mr-6" src={dropdown_icon} alt="Dropdown Icon" />
+              <div className="absolute top-0 right-0 pt-12 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
+                <div className="min-w-48 bg-white rounded shadow-lg flex flex-col gap-4 p-4">
+                  <p onClick={() => navigate('/myprofile')} className="hover:text-black cursor-pointer">
+                    My Profile
+                  </p>
+                  <p onClick={() => navigate('/mybookings')} className="hover:text-black cursor-pointer">
+                    My Bookings
+                  </p>
+                  <p
+                    onClick={() => {
+                      localStorage.clear(); // Clear session data
+                      setToken(false); // Update token state
+                      navigate('/login'); // Navigate to login page
+                    }}
+                    className="hover:text-black cursor-pointer"
+                  >
+                    Logout
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <button
-            className="bg-blue-600 text-blue-50 px-8 py-3 rounded-full font-light hidden md:block hover:bg-blue-400"
-            onClick={() => navigate('/login')}
-          >
-            Sign In
-          </button>
-        )}
-      </div>
+          ) : (
+            <button onClick={() => navigate('/login')} className="hover:text-black cursor-pointer">
+              Login
+            </button>
+          )}
+        </div>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 const db = require("../models");
 const Train = db.train;
 
-
 // Add more methods as needed
 
 exports.addTrain = (req, res) => {
@@ -31,3 +30,33 @@ exports.addTrain = (req, res) => {
       });
     });
 };
+
+exports.getTrains = (req, res) => {
+  Train.findAll()
+    .then((data) => {
+      res.json(data); // Send all train records to the client
+    })
+    .catch((err) => {
+      console.error('Error getting trains:', err);
+      res.status(500).json({
+        message: "Some error occurred while retrieving trains.",
+        error: err.toString(),
+      });
+    });
+};
+
+
+exports.getTrainCount = (req, res) => {
+  Train.count()
+    .then((data) => {
+      res.json(data); // Send the count to the client
+    })
+    .catch((err) => {
+      console.error('Error getting train count:', err);
+      res.status(500).json({
+        message: "Some error occurred while retrieving train count.",
+        error: err.toString(),
+      });
+    });
+};
+

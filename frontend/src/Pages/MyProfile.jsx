@@ -15,6 +15,9 @@ const MyProfile = () => {
 
   const [errors, setErrors] = useState({});
 
+  const username = localStorage.getItem('username');
+  const authToken = localStorage.getItem('authToken');
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -66,6 +69,7 @@ const MyProfile = () => {
       <Navbar />
       <div className="min-h-screen bg-gray-100 p-4">
         <h2 className="text-2xl font-bold mb-4">My Profile</h2>
+        <h1>Profile of {username}</h1>
         <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md">
           <div className="mb-4">
             <label className="block text-gray-700">Full Name</label>

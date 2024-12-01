@@ -11,7 +11,7 @@ exports.create = (req, res) => {
 
   const schedule = {
     schedule_id: req.body.schedule_id,
-    train_no: req.body.train_no,
+    train_no: req.body.train_no, // Ensure train_no is referenced correctly
     scheduled_date: req.body.scheduled_date,
     no_of_booked_seats: req.body.no_of_booked_seats
   };
@@ -27,4 +27,15 @@ exports.create = (req, res) => {
     });
 };
 
+exports.findAll = (req, res) => {
+  Schedule.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving schedules."
+      });
+    });
+};
 // Add more methods as needed

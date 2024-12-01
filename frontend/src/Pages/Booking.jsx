@@ -10,6 +10,9 @@ const Booking = () => {
     const [trainFilter, setTrainFilter] = useState('');
     const [dateFilter, setDateFilter] = useState('');
 
+    const username = localStorage.getItem('username');
+    const authToken = localStorage.getItem('authToken');
+
     useEffect(() => {
         // Fetch booking data from the server
         axios.get('/api/bookings')
@@ -56,6 +59,7 @@ const Booking = () => {
     return (
         <div>
             <Navbar/>
+            <h1>Booking - Admin {username}</h1>
             <TextField
                 label="Filter by Train Number"
                 variant="outlined"

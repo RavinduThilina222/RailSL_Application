@@ -8,11 +8,15 @@ const UserHome = () => {
   const [arrival, setArrival] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [passengers, setPassengers] = useState(1);
+  const user = { User_ID: '12345', name: 'John Doe' }; // Example user data
+
+  const username = localStorage.getItem('username');
+  const authToken = localStorage.getItem('authToken');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate('/schedule', {
-      state: { departure, arrival, date, passengers },
+      state: { departure, arrival, date, passengers, user },
     });
   };
 
@@ -32,6 +36,7 @@ const UserHome = () => {
         </h1>
 
         <div className="mt-8 bg-white bg-opacity-90 shadow-lg rounded-lg p-8 w-full max-w-md">
+          <h1>Welcome, {username}</h1>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <h2 className="text-2xl font-semibold text-center text-blue-800">
               Book a Train

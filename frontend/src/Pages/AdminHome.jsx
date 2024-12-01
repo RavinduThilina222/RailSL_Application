@@ -6,10 +6,12 @@ import axios from 'axios';
 const AdminHome = () => {
   const [trainCount, setTrainCount] = useState(0);
   const [todayBookings, setTodayBookings] = useState([]);
+  const username = localStorage.getItem('username');
+  const authToken = localStorage.getItem('authToken');
 
   useEffect(() => {
     // Fetch the number of trains
-    axios.get('/api/trains')
+    axios.get('/api/train/number')
       .then(response => {
         if (Array.isArray(response.data)) {
           setTrainCount(response.data.length);
@@ -39,6 +41,7 @@ const AdminHome = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <Navbar />
+      <h1>Welcome, Admin {username}</h1>
       <h2 className="text-2xl font-bold mb-4">Admin Home</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-6 rounded shadow-md">

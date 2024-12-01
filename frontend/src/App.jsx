@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MyProfile from './Pages/MyProfile';
 import MyBookings from './Pages/MyBookings';
 import AddTrain from './Pages/AddTrain';
@@ -16,24 +16,40 @@ import AddAdmin from './Pages/AddAdmin';
 import AdminHome from './Pages/AdminHome';
 
 function App() {
+  const userRole = localStorage.getItem('userRole');
+  const authToken = localStorage.getItem('authToken');
+  const username = localStorage.getItem('username');
+
+  const requireAdmin = (element) => {
+    return userRole === 'admin' ? element : <Navigate to="/login" />;
+  };
+
   return (
     <>
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpUser />} />
-          <Route path="/home" element={<UserHome />} />
-          <Route path="/schedule" element={<ViewScheduleUser />} />
-          <Route path="/confirmBooking" element={<ConfirmBooking />} />
-          <Route path='/myprofile' element={<MyProfile />} />
-          <Route path='/mybookings' element={<MyBookings />} />
-          <Route path='/addtrain' element={<AddTrain />} />
-          <Route path='/trainsadmin' element={<TrainSettings />} />
-          <Route path='/trainScheduleAdmin' element={<TrainScheduleSettings/>}/>
-          <Route path='/bookings' element={<Booking/>}/>
-          <Route path='/addSchedule' element={<AddSchedule/>}/>
-          <Route path='/addAdmin' element={<AddAdmin/>}/>
-          <Route path='/adminHome' element={<AdminHome/>}/>
+          {userRole === 'user' && (
+            <>
+              <Route path="/home" element={<UserHome />} />
+              <Route path="/schedule" element={<ViewScheduleUser />} />
+              <Route path="/confirmBooking" element={<ConfirmBooking />} />
+              <Route path='/myprofile' element={<MyProfile />} />
+              <Route path='/mybookings' element={<MyBookings />} />
+            </>
+          )}
+          {userRole === 'admin' && (
+            <>
+              <Route path='/addtrain' element={requireAdmin(<AddTrain />)} />
+              <Route path='/trainsadmin' element={requireAdmin(<TrainSettings />)} />
+              <Route path='/trainScheduleAdmin' element={requireAdmin(<TrainScheduleSettings />)} />
+              <Route path='/bookings' element={requireAdmin(<Booking />)} />
+              <Route path='/addSchedule' element={requireAdmin(<AddSchedule />)} />
+              <Route path='/addAdmin' element={requireAdmin(<AddAdmin />)} />
+              <Route path='/adminHome' element={requireAdmin(<AdminHome />)} />
+            </>
+          )}
         </Routes>
       </Router>
     </>

@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const session = require("express-session");
+require("dotenv").config(); // Load environment variables
+
 const app = express();
 
 // CORS Configuration
@@ -15,8 +18,18 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Configure session middleware using environment variable
+app.use(session({
+    secret: process.env.SESSION_SECRET, // Use the secret from environment variables
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 10 * 60 * 1000 } // 10 minutes
+}));
+
 // Database Connection
 const db = require("./models");
+const Schedule = db.schedule;
+const Train = db.train;
 db.sequelize.sync({ alter: true }) // Use alter to update existing tables
   .then(() => {
     console.log("Database connected and synchronized successfully.");
@@ -45,6 +58,41 @@ app.use('/api/schedule', scheduleRoutes);
 app.use('/api/seatReservation', seatReservationRoutes);
 app.use('/api/train', trainRoutes);
 app.use('/api/user', userRoutes);
+
+app.post('/api/schedules', async (req, res) => {
+  const { departure, arrival, date } = req.body;
+  try {
+    const schedules = await Schedule.findAll({
+      where: {
+        departure,
+        arrival,
+        scheduled_date: date
+      }
+    });
+    res.json(schedules);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+app.post('/api/trains', async (req, res) => {
+  const { departure, arrival, date } = req.body;
+  try {
+    const trains = await Train.findAll({
+      include: [{
+        model: Schedule,
+        where: {
+          departure,
+          arrival,
+          scheduled_date: date
+        }
+      }]
+    });
+    res.json(trains);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 // Fallback Route for undefined routes
 app.use((req, res, next) => {

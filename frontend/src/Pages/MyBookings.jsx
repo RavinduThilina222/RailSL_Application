@@ -5,6 +5,8 @@ import Navbar from '/src/Components/Navbar';
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [user, setUser] = useState(null);
+  const username = localStorage.getItem('username');
+  const authToken = localStorage.getItem('authToken');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,6 +41,7 @@ const MyBookings = () => {
       <Navbar />
       <div className="min-h-screen bg-gray-100 p-4">
         <h2 className="text-2xl font-bold mb-4">My Bookings</h2>
+        <h1>Bookings of {username}</h1>
         <table className="min-w-full bg-white">
           <thead>
             <tr>

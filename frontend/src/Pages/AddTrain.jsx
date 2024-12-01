@@ -15,6 +15,9 @@ const AddTrain = () => {
     arrival_time: ''
   });
 
+  const username = localStorage.getItem('username');
+  const authToken = localStorage.getItem('authToken');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTrainDetails({
@@ -76,6 +79,7 @@ const AddTrain = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <Navbar />
+      <h1>Add Train - Admin {username}</h1>
       <h2 className="text-2xl font-bold mb-4">Add Train</h2>
       <form className="bg-white p-6 rounded shadow-md max-w-md mx-auto" onSubmit={handleSubmit}>
         <input className="mb-4 p-2 border border-gray-300 rounded w-full" type="text" name="train_no" placeholder="Train No" value={trainDetails.train_no} onChange={handleChange} required />

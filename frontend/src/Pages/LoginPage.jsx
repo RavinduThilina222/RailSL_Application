@@ -21,14 +21,36 @@ const LoginPage = () => {
         }
         try {
             const endpoint = isAdmin ? '/admin/login' : '/user/login';
-            const response = await api.post(endpoint, { username, password });
-            console.log(response.data);
-            // Handle successful login (e.g., save token, redirect)
-            navigate('/home');
+            const response = await api.post(endpoint, { username, password }); // Send plain password
+            console.log("Response data:", response.data);
+            
+            const role = isAdmin ? 'admin' : 'user';
+            const { token } = response.data;
+
+            localStorage.setItem('userRole', role); // Store user role in localStorage
+            localStorage.setItem('authToken', token); // Store auth token in localStorage
+            localStorage.setItem('username', username); // Store username in localStorage
+            setSessionTimeout(); // Set session timeout
+            console.log("Role:", role);
+            if (role === 'admin') {
+                console.log("Navigating to /adminHome");
+                navigate('/adminHome');
+            } else if (role === 'user') {
+                console.log("Navigating to /userHome");
+                navigate('/home');
+            }
         } catch (error) {
-            console.error(error);
-            // Handle login error
+            console.error("Login failed:", error);
+            alert("Invalid login credentials");
         }
+    };
+
+    const setSessionTimeout = () => {
+        setTimeout(() => {
+            alert("Session expired. Please log in again.");
+            localStorage.clear(); // Clear session data
+            navigate('/login'); // Redirect to login page
+        }, 10 * 60 * 1000); // 10 minutes
     };
 
     const handleRecaptchaChange = (value) => {
@@ -84,7 +106,13 @@ const LoginPage = () => {
                         <div className="text-center text-sm">
                             <span>Don't have an account?</span>
                         </div>
-                        <button type="button" className="p-2 text-white bg-blue-700 rounded-full hover:bg-blue-500">Signup</button>
+                        <button 
+                            type="button" 
+                            className="p-2 text-white bg-blue-700 rounded-full hover:bg-blue-500" 
+                            onClick={() => navigate('/signup')}
+                        >
+                            Signup
+                        </button>
                     </form>
                 </div>
                 <p className="absolute bottom-0 w-full text-center text-xs text-white p-2">&copy; 2024 RT Solutions. All rights reserved.</p>

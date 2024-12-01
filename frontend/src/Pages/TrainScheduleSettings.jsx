@@ -8,9 +8,12 @@ const TrainScheduleSettings = () => {
     const [schedules, setSchedules] = useState([]);
     const [filter, setFilter] = useState('');
 
+    const username = localStorage.getItem('username');
+    const authToken = localStorage.getItem('authToken');
+
     useEffect(() => {
         // Fetch train data from the server
-        axios.get('/api/trains')
+        axios.get('http://localhost:8080/api/train/trains')
             .then(response => {
                 if (Array.isArray(response.data)) {
                     setTrains(response.data);
@@ -21,7 +24,7 @@ const TrainScheduleSettings = () => {
             .catch(error => console.error('Error fetching train data:', error));
 
         // Fetch schedule data from the server
-        axios.get('/api/schedules')
+        axios.get('http://localhost:8080/api/schedule/schedules')
             .then(response => {
                 if (Array.isArray(response.data)) {
                     setSchedules(response.data);
@@ -43,6 +46,7 @@ const TrainScheduleSettings = () => {
     return (
         <div>
             <Navbar/>
+            <h1>Train Schedule Settings - Admin {username}</h1>
             <TextField
                 label="Filter by Departure Date"
                 variant="outlined"
@@ -78,12 +82,12 @@ const TrainScheduleSettings = () => {
                                     <TableRow key={schedule.schedule_id}>
                                         <TableCell>{train?.train_no}</TableCell>
                                         <TableCell>{train?.train_name}</TableCell>
-                                        <TableCell>{train?.Train_Line}</TableCell>
+                                        <TableCell>{train?.train_line}</TableCell>
                                         <TableCell>{train?.departure_station}</TableCell>
                                         <TableCell>{train?.arrival_station}</TableCell>
                                         <TableCell>{train?.available_days}</TableCell>
                                         <TableCell>{train?.capacity}</TableCell>
-                                        <TableCell>{train?.depature_time}</TableCell>
+                                        <TableCell>{train?.departure_time}</TableCell>
                                         <TableCell>{train?.arrival_time}</TableCell>
                                         <TableCell>{schedule.scheduled_date}</TableCell>
                                         <TableCell>{schedule.no_of_booked_seats}</TableCell>

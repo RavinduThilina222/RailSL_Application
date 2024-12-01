@@ -1,11 +1,10 @@
-module.exports = app => {
-    const schedule = require("../controllers/schedule.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", schedule.create);
-  
-    // Add more routes as needed
-  
-    app.use('/api/schedule', router);
-  };
+const express = require('express');
+const router = express.Router();
+const schedule = require("../controllers/schedule.controller.js");
+
+router.post("/schedules", schedule.create);
+router.get("/schedules", schedule.findAll);
+
+// ...existing code...
+
+module.exports = router; // Export the router
