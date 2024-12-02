@@ -2,9 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require("express-session");
+const helmet = require("helmet");
+
+
 require("dotenv").config(); // Load environment variables
 
+
 const app = express();
+const port = process.env.PORT || 5000; // Ensure the backend server is set up correctly and listening on the correct port
+
 
 // CORS Configuration
 const corsOptions = {
@@ -17,6 +23,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy()); // Add Content Security Policy
+app.use(helmet.referrerPolicy({ policy: 'no-referrer' })); // Add Referrer Policy
+app.use(helmet.permittedCrossDomainPolicies()); // Add Cross-Domain Policies
 
 // Configure session middleware using environment variable
 app.use(session({
@@ -57,42 +67,7 @@ app.use('/api/booking', bookingRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/seatReservation', seatReservationRoutes);
 app.use('/api/train', trainRoutes);
-app.use('/api/user', userRoutes);
-
-app.post('/api/schedules', async (req, res) => {
-  const { departure, arrival, date } = req.body;
-  try {
-    const schedules = await Schedule.findAll({
-      where: {
-        departure,
-        arrival,
-        scheduled_date: date
-      }
-    });
-    res.json(schedules);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-app.post('/api/trains', async (req, res) => {
-  const { departure, arrival, date } = req.body;
-  try {
-    const trains = await Train.findAll({
-      include: [{
-        model: Schedule,
-        where: {
-          departure,
-          arrival,
-          scheduled_date: date
-        }
-      }]
-    });
-    res.json(trains);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
+app.use('/api/user', userRoutes); // Ensure this matches the frontend baseURL
 
 // Fallback Route for undefined routes
 app.use((req, res, next) => {
@@ -112,9 +87,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}.`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 

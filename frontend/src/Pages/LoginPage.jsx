@@ -41,7 +41,11 @@ const LoginPage = () => {
             }
         } catch (error) {
             console.error("Login failed:", error);
-            alert("Invalid login credentials");
+            if (error.code === 'ERR_NETWORK') {
+                alert("Network error. Please check your internet connection and try again.");
+            } else {
+                alert("Invalid login credentials");
+            }
         }
     };
 

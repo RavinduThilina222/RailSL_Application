@@ -12,6 +12,7 @@ function SignUpUser() {
     });
 
     const [errors, setErrors] = useState({});
+    const [submitError, setSubmitError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -60,7 +61,7 @@ function SignUpUser() {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const response = await api.post('/user', {
+                const response = await api.post('http://localhost:8080/api/user', { // Ensure the endpoint is correct
                     User_ID: formData.username, // Assuming User_ID is the same as username
                     Full_Name: formData.fullName,
                     email: formData.email,
@@ -72,8 +73,8 @@ function SignUpUser() {
                 console.log("Form data submitted:", response.data);
                 // Handle successful signup (e.g., redirect to login page)
             } catch (error) {
-                console.error(error);
-                // Handle signup error
+                console.error("Error submitting form data:", error.response ? error.response.data : error.message);
+                setSubmitError('Signup failed. Please try again.');
             }
         }
     };
@@ -166,6 +167,8 @@ function SignUpUser() {
                         />
                         {errors.nic && <div className="text-red-500 text-sm mt-1">{errors.nic}</div>}
                     </div>
+
+                    {submitError && <div className="text-red-500 text-sm mt-1">{submitError}</div>}
 
                     <button
                         type="submit"

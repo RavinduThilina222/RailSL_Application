@@ -1,8 +1,9 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
+const { logger } = require('./logger'); // Import the logger
+
 const sequelize = new Sequelize('railsl_db', 'root', 'pass', {
   host: 'localhost',
-  dialect: "mysql",
-  operatorsAliases: false,
+  dialect: 'mysql',
   pool: {
     max: 5,
     min: 0,
@@ -23,9 +24,13 @@ db.seatReservation = require("./seatReservation.model.js")(sequelize, Sequelize)
 db.train = require("./train.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 
-db.booking.belongsTo(db.user, { foreignKey: 'user_id' });
-db.booking.belongsTo(db.schedule, { foreignKey: 'schedule_id' });
-db.schedule.belongsTo(db.train, { foreignKey: 'train_no' });
-db.seatReservation.belongsTo(db.booking, { foreignKey: 'booking_id' });
+// Log database connection status
+sequelize.authenticate()
+  .then(() => {
+    logger.info('Database connected and synchronized successfully.');
+  })
+  .catch(err => {
+    logger.error('Unable to connect to the database:', err);
+  });
 
 module.exports = db;

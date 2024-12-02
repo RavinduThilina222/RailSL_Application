@@ -37,6 +37,8 @@ const TrainScheduleSettings = () => {
 
     const handleAddSchedule = () => {
         // Handle add schedule logic here
+        navigate('/addSchedule');
+
     };
 
     const filteredSchedules = schedules.filter(schedule => 
